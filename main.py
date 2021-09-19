@@ -1,12 +1,15 @@
+# Average LOC: 5.25
+# Average CC: 1.25
+
 import numpy as np
 from PIL import Image
 
 
-def elem_mult(img, mat):
+def elem_mult(img, mat):  # LOC: 1, CC: 1
     return np.einsum("ij, ...j", mat, img)
 
 
-def make_colorblind(rgb, color_deficit="d"):
+def make_colorblind(rgb, color_deficit="d"):  # LOC: 13, CC: 1
     cb_matrices = {
         "d": np.array([[1, 0, 0], [1.10104433,  0, -0.00901975], [0, 0, 1]]),
         "p": np.array([[0, 0.90822864, 0.008192], [0, 1, 0], [0, 0, 1]]),
@@ -22,14 +25,18 @@ def make_colorblind(rgb, color_deficit="d"):
     return blind_rgb
 
 
-def colorblind_img(img_file, colorblind_type="p"):
+def colorblind_img(img_file, colorblind_type="p"):  # LOC: 4, CC: 1
     rgb_arr = np.array(Image.open(img_file).convert('RGB'))
     cb_arr = make_colorblind(rgb_arr, color_deficit=colorblind_type).astype('uint8')
     cb_img = Image.fromarray(cb_arr)
     return cb_img
 
 
-if __name__ == '__main__':
+def main():  # LOC: 3, CC: 2
     for c in ['d', 't', 'p']:
         img = colorblind_img('test.jpg', c)
         img.show()
+
+
+if __name__ == '__main__':
+    main()
